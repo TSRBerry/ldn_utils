@@ -36,14 +36,15 @@ function p_ldn_advertisement.dissector(buffer, pinfo, tree)
     adFrame:add(f_nonce, buffer(36, 4))
 
     local decryptedData =
-        DecryptAdvertisementData(buffer:bytes(40, 32 + adDataSize), buffer:bytes(0, 32), buffer:bytes(36, 4)):tvb(
-        "AdvertisementData"
-    )
+        DecryptAdvertisementData(buffer:bytes(40, 32 + adDataSize), buffer:bytes(0, 32), buffer:bytes(36, 4))
+
+    local decryptedHash = decryptedData:subset(0, 32):tvb("Hash")
+    local decryptedData = decryptedData:subset(32, decryptedData:len() - 32):tvb("AdvertisementData")
 
     -- encrypted hash
     adFrame:add(f_hash_enc, buffer(40, 32)).hidden = true
     -- decrypted hash
-    adFrame:add(f_hash, decryptedData(0, 32))
+    adFrame:add(f_hash, decryptedHash()).generated = true
     -- encrypted advertisement data
     adFrame:add(f_adData, buffer(72, adDataSize)).hidden = true
     -- decrypted advertisement data

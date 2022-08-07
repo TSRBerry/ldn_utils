@@ -43,8 +43,6 @@ function p_ldn_advertisement_data.dissector(buffer, pinfo, tree)
         return
     end
 
-    buffer = buffer(32)
-
     local appData_dissector = GLOBALS.LDN_APP_DATA_TABLE:get_dissector(sessionInfo.tid)
     if appData_dissector == nil then
         appData_dissector = Dissector.get("data")

@@ -13,7 +13,7 @@ p_ldn.fields = {f_protocol_id, f_packet_type}
 
 -- >>> Dissector <<<
 function p_ldn.dissector(buffer, pinfo, tree)
-    if Struct.unpack("I1", buffer(0, 1):raw()) ~= 4 and GLOBALS.tables.packet_type[Struct.unpack("I2", buffer(0, 2):raw())] == nil then
+    if Struct.unpack("I1", buffer(0, 1):raw()) ~= 4 and GLOBALS.tables.packet_type[Struct.unpack(">I2", buffer(0, 2):raw())] == nil then
         return
     end
 
@@ -25,7 +25,7 @@ function p_ldn.dissector(buffer, pinfo, tree)
     if Struct.unpack("I1", buffer(0, 1):raw()) == 4 then
         subtree:add(f_protocol_id, buffer(0, 1))
         -- padding 1
-        packet_type = Struct.unpack("I2", buffer(2, 2):raw())
+        packet_type = Struct.unpack(">I2", buffer(2, 2):raw())
         subtree:add(f_packet_type, buffer(2, 2))
         -- zero 2 and padding 2
         packet = buffer(8):tvb()
