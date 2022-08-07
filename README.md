@@ -1,11 +1,15 @@
-# LDN-Dissector
+# LDN Utilities
 
-(WIP) Wireshark Dissector for LDN
+[WIP] Small tools/scripts to help analyzing LDN communication
 
-## Dissectable packets
+## Wireshark dissector
+
+Currently this lua plugin can only dissect the following packets:
 
 - AdvertisementFrames
 
 ## Credits
 
-- [@kinnay](https://github.com/kinnay) for creating the [NintendoClients](https://github.com/kinnay/NintendoClients/wiki) wiki which made this process a lot easier.
+In addition to everyone credited for helping me build [ldn_debug_logger](https://github.com/TSRBerry/ldn_debug_logger) I want to thank:
+
+- [@kinnay](https://github.com/kinnay) for creating the [NintendoClients](https://github.com/kinnay/NintendoClients/wiki) wiki which made this process a lot easier and for answering the questions I had about the protocol.
