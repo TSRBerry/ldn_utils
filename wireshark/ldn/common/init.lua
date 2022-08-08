@@ -9,7 +9,9 @@ GLOBALS = {
         participants = false,
         advertisementData = false,
         advertisementFrame = false,
-        tables = false
+        tables = false,
+        mii = {},
+        pia = {}
     },
     dissectors = {
         SessionInfo = nil,
