@@ -84,8 +84,7 @@ function p_mii.dissector(buffer, pinfo, tree)
 
     local subtree = tree:add(p_mii, buffer(), "Mii")
     subtree:add(createId, buffer(0, 16))
-    -- wide strings are not supported
-    subtree:add(name, buffer(16, 11 * 2))
+    subtree:add(name, buffer(16, 11 * 2):le_ustring())
     subtree:add(fontRegion, buffer(38, 1))
     subtree:add(favoriteColor, buffer(39, 1))
     subtree:add(gender, buffer(40, 1))
