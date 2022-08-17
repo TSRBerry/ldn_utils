@@ -1,24 +1,38 @@
 -- Source: https://github.com/kinnay/NintendoClients/wiki/LDN-Application-Data-(Pia)
-if GLOBALS == nil or GLOBALS.modules.mii == nil then
+if GLOBALS == nil then
     return
 end
-GLOBALS.modules.mii = {}
-local tables = require("ldn.appdata.mii.tables")
-local faceline = require("ldn.appdata.mii.faceline")
-local hair = require("ldn.appdata.mii.hair")
-local eye = require("ldn.appdata.mii.eye")
-local eyebrow = require("ldn.appdata.mii.eyebrow")
-local nose = require("ldn.appdata.mii.nose")
-local mouth = require("ldn.appdata.mii.mouth")
-local beard = require("ldn.appdata.mii.beard")
-local mustache = require("ldn.appdata.mii.mustache")
-local glass = require("ldn.appdata.mii.glass")
-local mole = require("ldn.appdata.mii.mole")
+
+GLOBALS.modules.mii = {
+    tables = false,
+    faceline = false,
+    hair = false,
+    eye = false,
+    eyebrow = false,
+    nose = false,
+    mouth = false,
+    beard = false,
+    mustache = false,
+    glass = false,
+    mole = false
+}
+
+local tables = require("mii.tables")
+local faceline = require("mii.faceline")
+local hair = require("mii.hair")
+local eye = require("mii.eye")
+local eyebrow = require("mii.eyebrow")
+local nose = require("mii.nose")
+local mouth = require("mii.mouth")
+local beard = require("mii.beard")
+local mustache = require("mii.mustache")
+local glass = require("mii.glass")
+local mole = require("mii.mole")
 
 -- Functions
 local function merge_tables(table1, table2)
-    for k, v in pairs(table2) do
-        table1[k] = v
+    for _, v in pairs(table2) do
+        table1[#table1 + 1] = v
     end
     return table1
 end
@@ -32,31 +46,32 @@ local function count_table(table)
 end
 
 -- ProtoField definitions
-local createId = ProtoField.bytes("ldn.appdata.mii.createId", "Create ID", base.NONE)
+local createId = ProtoField.bytes("ldn.appdata.common.mii.createId", "Create ID", base.NONE)
 -- wide strings are not supported
-local name = ProtoField.string("ldn.appdata.mii.name", "Name")
-local fontRegion = ProtoField.uint8("ldn.appdata.mii.fontRegion", "Font region", base.DEC, tables.FontRegion)
+local name = ProtoField.string("ldn.appdata.common.mii.name", "Name")
+local fontRegion = ProtoField.uint8("ldn.appdata.common.mii.fontRegion", "Font region", base.DEC, tables.FontRegion)
 local favoriteColor =
-    ProtoField.uint8("ldn.appdata.mii.favortiteColor", "Favorite color", base.DEC, tables.FavoriteColor)
-local gender = ProtoField.uint8("ldn.appdata.mii.gender", "Gender", base.DEC)
-local height = ProtoField.uint8("ldn.appdata.mii.height", "Height", base.DEC)
-local build = ProtoField.uint8("ldn.appdata.mii.build", "Build", base.DEC)
-local isSpecial = ProtoField.bool("ldn.appdata.mii.isSpecial", "Is special")
-local regionMove = ProtoField.uint8("ldn.appdata.mii.regionMove", "Region move", base.DEC)
+    ProtoField.uint8("ldn.appdata.common.mii.favortiteColor", "Favorite color", base.DEC, tables.FavoriteColor)
+local gender = ProtoField.uint8("ldn.appdata.common.mii.gender", "Gender", base.DEC)
+local height = ProtoField.uint8("ldn.appdata.common.mii.height", "Height", base.DEC)
+local build = ProtoField.uint8("ldn.appdata.common.mii.build", "Build", base.DEC)
+local isSpecial = ProtoField.bool("ldn.appdata.common.mii.isSpecial", "Is special")
+local regionMove = ProtoField.uint8("ldn.appdata.common.mii.regionMove", "Region move", base.DEC)
 
 -- Proto definition
-local p_mii = Proto("ldn.appdata.mii", "Mii Info")
-p_mii.fields = {createId, name, fontRegion, favoriteColor, gender, height, build, isSpecial, regionMove}
-p_mii.fields = merge_tables(p_mii.fields, faceline)
-p_mii.fields = merge_tables(p_mii.fields, hair)
-p_mii.fields = merge_tables(p_mii.fields, eye)
-p_mii.fields = merge_tables(p_mii.fields, eyebrow)
-p_mii.fields = merge_tables(p_mii.fields, nose)
-p_mii.fields = merge_tables(p_mii.fields, mouth)
-p_mii.fields = merge_tables(p_mii.fields, beard)
-p_mii.fields = merge_tables(p_mii.fields, mustache)
-p_mii.fields = merge_tables(p_mii.fields, glass)
-p_mii.fields = merge_tables(p_mii.fields, mole)
+local p_mii = Proto("ldn.appdata.common.mii", "Mii Info")
+-- I know this is dumb, but otherwise wireshark will freeze
+local mii_fields = {createId, name, fontRegion, favoriteColor, gender, height, build, isSpecial, regionMove}
+local faceline_fields = merge_tables(mii_fields, faceline)
+local hair_fields = merge_tables(faceline_fields, hair)
+local eye_fields = merge_tables(hair_fields, eye)
+local eyebrow_fields = merge_tables(eye_fields, eyebrow)
+local nose_fields = merge_tables(eyebrow_fields, nose)
+local mouth_fields = merge_tables(nose_fields, mouth)
+local beard_fields = merge_tables(mouth_fields, beard)
+local mustache_fields = merge_tables(beard_fields, mustache)
+local glass_fields = merge_tables(mustache_fields, glass)
+p_mii.fields = merge_tables(glass_fields, mole)
 
 -- Dissector
 function p_mii.dissector(buffer, pinfo, tree)
@@ -142,5 +157,5 @@ function p_mii.dissector(buffer, pinfo, tree)
     -- padding 1
 end
 
--- Add dissector to table
-DissectorTable:add("ldn.appdata.mii", p_mii)
+-- Add dissector to common appdata table
+GLOBALS.LDN_COMMON_DATA_TABLE:add("mii", p_mii)

@@ -9,9 +9,7 @@ GLOBALS = {
         participants = false,
         advertisementData = false,
         advertisementFrame = false,
-        tables = false,
-        mii = {},
-        pia = {}
+        tables = false
     },
     dissectors = {
         SessionInfo = nil,
@@ -26,6 +24,12 @@ GLOBALS = {
 GLOBALS.LDN_APP_DATA_TABLE = DissectorTable.get("ldn.appdata")
 if GLOBALS.LDN_APP_DATA_TABLE == nil then
     GLOBALS.LDN_APP_DATA_TABLE = DissectorTable.new("ldn.appdata", "LDN application data", ftypes.STRING, base.HEX)
+end
+
+GLOBALS.LDN_COMMON_DATA_TABLE = DissectorTable.get("ldn.appdata.common")
+if GLOBALS.LDN_COMMON_DATA_TABLE == nil then
+    GLOBALS.LDN_COMMON_DATA_TABLE =
+        DissectorTable.new("ldn.appdata.common", "LDN common application data", ftypes.STRING, base.NONE)
 end
 
 GLOBALS.LDN_PACKETS = DissectorTable.get("ldn.packets")
