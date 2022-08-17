@@ -33,13 +33,15 @@ local function file_readlines(path)
         return {}
     end
     local lines = {}
+    local linenum = 0
     for line in io.lines(path) do
-        lines[#lines + 1] = line
+        lines[linenum] = line
+        linenum = linenum + 1
     end
     return lines
 end
 
-local keys = file_readlines("~/.switch/wireshark-ldn.keys")
+local keys = file_readlines(os.getenv("HOME") .. "/.switch/wireshark-ldn.keys")
 
 -- >>> Decryption helper functions <<<
 

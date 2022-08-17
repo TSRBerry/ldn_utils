@@ -39,7 +39,7 @@ function p_ldn_advertisement.dissector(buffer, pinfo, tree)
         DecryptAdvertisementData(buffer:bytes(40, 32 + adDataSize), buffer:bytes(0, 32), buffer:bytes(36, 4))
 
     local decryptedHash = decryptedData:subset(0, 32):tvb("Hash")
-    local decryptedData = decryptedData:subset(32, decryptedData:len() - 32):tvb("AdvertisementData")
+    decryptedData = decryptedData:subset(32, decryptedData:len() - 32):tvb("AdvertisementData")
 
     -- encrypted hash
     adFrame:add(f_hash_enc, buffer(40, 32)).hidden = true
