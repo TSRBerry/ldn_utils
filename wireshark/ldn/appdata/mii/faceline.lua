@@ -1,7 +1,7 @@
-if GLOBALS == nil or GLOBALS.modules.mii.facline ~= false then
+if GLOBALS == nil or GLOBALS.modules.mii.faceline ~= false then
     return
 end
-GLOBALS.modules.mii.facline = true
+GLOBALS.modules.mii.faceline = true
 
 -- Module table
 local faceline = {}
