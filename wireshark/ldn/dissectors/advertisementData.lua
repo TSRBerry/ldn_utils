@@ -6,6 +6,11 @@ GLOBALS.modules.advertisementData = true
 local sessionInfo = require("ldn.dissectors.sessionInfo")
 require("ldn.dissectors.participants")
 
+-- Fix imports for appdata protocols
+require("ldn.appdata.mii.mii")
+require("ldn.appdata.pia.header")
+require("ldn.appdata.mario_kart_8")
+
 -- ProtoField definitions
 local f_adData_netkey = ProtoField.bytes("ldn.advertisement.data.netkey", "Network key", base.NONE)
 local f_adData_security =
@@ -43,6 +48,7 @@ function p_ldn_advertisement_data.dissector(buffer, pinfo, tree)
         return
     end
 
+    -- print("Searching appData dissector for " .. sessionInfo.tid)
     local appData_dissector = GLOBALS.LDN_APP_DATA_TABLE:get_dissector(sessionInfo.tid)
     if appData_dissector == nil then
         appData_dissector = Dissector.get("data")
