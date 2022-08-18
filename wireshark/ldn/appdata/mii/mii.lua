@@ -114,7 +114,7 @@ function p_mii.dissector(buffer, pinfo, tree)
     -- eyebrow
     local t_eyebrow = subtree:add(p_mii, buffer(offset, count_table(eyebrow)), "Eyebrow")
     for _, v in pairs(eyebrow) do
-        subtree:add(v, buffer(offset, 1))
+        t_eyebrow:add(v, buffer(offset, 1))
         offset = offset + 1
     end
     -- nose
