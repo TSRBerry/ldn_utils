@@ -1,4 +1,4 @@
-
+#!/usr/bin/env python3
 # This script joins a Mario Kart 8: Deluxe network and listens for packets.
 
 import ldn
