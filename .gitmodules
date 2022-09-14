@@ -1,0 +1,3 @@
+[submodule "python/LDN"]
+	path = python/LDN
+	url = https://github.com/kinnay/LDN
