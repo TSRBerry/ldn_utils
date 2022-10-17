@@ -2,9 +2,14 @@
 
 [WIP] Small tools/scripts to help analyzing LDN communication
 
-## Wireshark dissector
+## Wireshark dissectors
 
-Currently this lua plugin can only dissect the following packets:
+- ldn_mitm
+- ldn
+  
+### Ldn dissector progress
+
+Currently the ldn plugin can only dissect the following packets:
 
 - AdvertisementFrames
 
